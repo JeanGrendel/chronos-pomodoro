@@ -1,4 +1,4 @@
-import { PlayCircleIcon } from "lucide-react";
+import { PlayCircleIcon, StopCircleIcon } from "lucide-react";
 import { Cycles } from "../Cycles";
 import DefaultButton from "../DefaultButton";
 import DefaultInput from "../DefaultInput";
@@ -50,13 +50,29 @@ export function MainForm() {
         tasks: [...prevState.tasks, newTask],
       };
     });
-
   }
+
+  function handleInterruptTask() {
+      setState(prevState => {
+        return {
+          ...prevState,
+          activeTask: null,
+          secondsRemaining: 0,
+          formattedSecondsRemaining: '00:00',
+          tasks: prevState.tasks.map(task => {
+            if (prevState.activeTask && prevState.activeTask.id === task.id) {
+              return {...task, interruptDate: Date.now() };
+            }
+            return task;
+          })
+        };
+      });
+    }
 
     return (
         <form onSubmit={handleCreateNewTask} className='form' action=''>
           <div className='formRow'>
-            <DefaultInput id='meuInput' type='text' labelText='Task' placeholder='Digite algo' ref={taskNameInput} />
+            <DefaultInput id='meuInput' type='text' labelText='Task' placeholder='Digite algo' ref={taskNameInput} disabled={!!state.activeTask} />
           </div>
 
           <div className='formRow'>
@@ -69,7 +85,11 @@ export function MainForm() {
             </div>
           )}
           <div className='formRow'>
-            <DefaultButton icon={<PlayCircleIcon />}/> 
+            {!state.activeTask ? (
+              <DefaultButton aria-label='Iniciar Nova Tarefa' title="Iniciar Nova Tarefa" type='submit' key='botao_submit' icon={<PlayCircleIcon />}/> 
+            ) : (
+              <DefaultButton aria-label='Interromper Tarefa Atual' title="Interromper Tarefa Atual" type='button' color='red' key='botao_button' icon={<StopCircleIcon />} onClick={handleInterruptTask} /> 
+            )}
           </div>
         </form>
     );
