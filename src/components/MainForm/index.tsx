@@ -8,6 +8,7 @@ import { useTaskContext } from "../../contexts/TaskContext/useTaskContext";
 import { getNextCycle } from "../../utils/getNextCycle";
 import { getNextCycleTipe } from "../../utils/getNextCycleTipe";
 import { TaskActionTypes } from "../../contexts/TaskContext/TaskActions";
+import { Tips } from "../Tips";
 
 export function MainForm() {
   const { state, dispatch } = useTaskContext();
@@ -44,28 +45,28 @@ export function MainForm() {
     dispatch({type: TaskActionTypes.INTERRUPT_TASK})
   }
 
-    return (
-        <form onSubmit={handleCreateNewTask} className='form' action=''>
-          <div className='formRow'>
-            <DefaultInput id='meuInput' type='text' labelText='Task' placeholder='Digite algo' ref={taskNameInput} disabled={!!state.activeTask} />
-          </div>
+  return (
+      <form onSubmit={handleCreateNewTask} className='form' action=''>
+        <div className='formRow'>
+          <DefaultInput id='meuInput' type='text' labelText='Task' placeholder='Digite algo' ref={taskNameInput} disabled={!!state.activeTask} />
+        </div>
 
-          <div className='formRow'>
-            <p>Lorem ipsum dolor sit amet.</p>
-          </div>
+        <div className='formRow'>
+          <Tips />
+        </div>
 
-          {state.currentCycle > 0 && (
-            <div className='formRow'>
-              <Cycles />
-            </div>
+        {state.currentCycle > 0 && (
+          <div className='formRow'>
+            <Cycles />
+          </div>
+        )}
+        <div className='formRow'>
+          {!state.activeTask ? (
+            <DefaultButton aria-label='Iniciar Nova Tarefa' title="Iniciar Nova Tarefa" type='submit' key='botao_submit' icon={<PlayCircleIcon />}/> 
+          ) : (
+            <DefaultButton aria-label='Interromper Tarefa Atual' title="Interromper Tarefa Atual" type='button' color='red' key='botao_button' icon={<StopCircleIcon />} onClick={handleInterruptTask} /> 
           )}
-          <div className='formRow'>
-            {!state.activeTask ? (
-              <DefaultButton aria-label='Iniciar Nova Tarefa' title="Iniciar Nova Tarefa" type='submit' key='botao_submit' icon={<PlayCircleIcon />}/> 
-            ) : (
-              <DefaultButton aria-label='Interromper Tarefa Atual' title="Interromper Tarefa Atual" type='button' color='red' key='botao_button' icon={<StopCircleIcon />} onClick={handleInterruptTask} /> 
-            )}
-          </div>
-        </form>
-    );
+        </div>
+      </form>
+  );
 };
