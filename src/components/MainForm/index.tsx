@@ -38,7 +38,18 @@ export function MainForm() {
       type: nextCycleType,
     };
 
-    dispatch({type: TaskActionTypes.START_TASK, payload: newTask })
+    dispatch({type: TaskActionTypes.START_TASK, payload: newTask });
+
+    const worker = new Worker(new URL('../../workers/TimeWorker.js', import.meta.url));
+
+    worker.postMessage('FAVOR');
+    worker.postMessage('FALA_OI');
+    worker.postMessage('BLABLA');
+    worker.postMessage('FECHAR');
+
+    worker.onmessage = function (event) {
+      console.log('PRINCIPAL Recebeu: ', event.data);
+    };
   }
 
   function handleInterruptTask() {
