@@ -17,10 +17,16 @@ export function TaskContextProvider({children}: TaskContextProviderProps) {
 
   const worker = TimerWorkerManager.getInstance();
 
+  // eslint-disable-next-line react-hooks/refs
   worker.onmessage(e => {
-    const countDownSeconds = e.data
+    const countDownSeconds = e.data;
 
     if (countDownSeconds <= 0) {
+      if (playBeepRef.current) {
+        playBeepRef.current();
+        playBeepRef.current = null;
+      };
+
       dispatch({
         type: TaskActionTypes.COMPLETE_TASK,
       });
