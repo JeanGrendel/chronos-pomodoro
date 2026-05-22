@@ -4,7 +4,7 @@ type MessagesContainerProps = {
   children: React.ReactNode;
 };
 
-export function MessagesContaniner(children: MessagesContainerProps) {
+export function MessagesContainer({children}: MessagesContainerProps) {
   return (
     <>
     {children}
@@ -23,6 +23,5 @@ export function MessagesContaniner(children: MessagesContainerProps) {
       transition={Bounce}
       />
     </>
-  )
-
+  );
 };
