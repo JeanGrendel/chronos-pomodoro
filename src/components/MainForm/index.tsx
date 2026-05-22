@@ -16,6 +16,7 @@ export function MainForm() {
   const taskNameInput = useRef<HTMLInputElement>(null);
   const nextCycle = getNextCycle(state.currentCycle);
   const nextCycleType = getNextCycleTipe(nextCycle);
+  const lastTaskName = state.tasks[state.tasks.length - 1]?.name || '';
 
   function handleCreateNewTask(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -52,7 +53,7 @@ export function MainForm() {
   return (
       <form onSubmit={handleCreateNewTask} className='form' action=''>
         <div className='formRow'>
-          <DefaultInput id='meuInput' type='text' labelText='Task' placeholder='Digite algo' ref={taskNameInput} disabled={!!state.activeTask} />
+          <DefaultInput id='meuInput' type='text' labelText='Task' placeholder='Digite algo' ref={taskNameInput} disabled={!!state.activeTask} defaultValue={lastTaskName} />
         </div>
 
         <div className='formRow'>
