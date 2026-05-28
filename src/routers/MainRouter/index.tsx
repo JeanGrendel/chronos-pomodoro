@@ -3,6 +3,7 @@ import { Home } from "../../pages/Home";
 import { AboutPomodoro } from "../../pages/AboutPomodoro";
 import { NotFound } from "../../pages/NotFound";
 import { useEffect } from "react";
+import { History } from "../../pages/History";
 
 // Componente ScrollToTop não retorna nada, porém ele possibilita voltar o scroll da atualização da página para o topo (Ele foi incluido como children para o MainRouter).
 function ScrollToTop() {
@@ -22,6 +23,7 @@ export function MainRouter() {
         <Route path='/' element={<Home />}/>
         <Route path='/about-pomodoro/' element={<AboutPomodoro />}/>
         <Route path='*' element={<NotFound />}/>
+        <Route path='/history/' element={<History />}/>
       </Routes>
       <ScrollToTop />
     </BrowserRouter>
