@@ -8,12 +8,10 @@ import { formatDate } from "../../utils/formatDate";
 import { getTaskStatus } from "../../utils/getTaskStatus";
 import { sortTasks, type SortTasksOptions } from "../../utils/sortTasks";
 import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import { Dialog } from "../../components/Dialog";
-
-import styles from './styles.module.css';
 import { showMessage } from "../../adapters/showMessage";
 import { TaskActionTypes } from "../../contexts/TaskContext/TaskActions";
+
+import styles from './styles.module.css';
 
 export function History() {
   const { state, dispatch } = useTaskContext();
