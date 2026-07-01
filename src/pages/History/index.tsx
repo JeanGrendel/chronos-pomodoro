@@ -3,17 +3,21 @@ import { Container } from "../../components/Container";
 import DefaultButton from "../../components/DefaultButton";
 import { Heading } from "../../components/Heading";
 import { MainTemplate } from "../../templates/MainTemplate";
-
-import styles from './styles.module.css';
 import { useTaskContext } from "../../contexts/TaskContext/useTaskContext";
 import { formatDate } from "../../utils/formatDate";
 import { getTaskStatus } from "../../utils/getTaskStatus";
 import { sortTasks, type SortTasksOptions } from "../../utils/sortTasks";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { Dialog } from "../../components/Dialog";
+
+import styles from './styles.module.css';
+import { showMessage } from "../../adapters/showMessage";
 import { TaskActionTypes } from "../../contexts/TaskContext/TaskActions";
 
 export function History() {
-  const {state, dispatch } = useTaskContext();
+  const { state, dispatch } = useTaskContext();
+  const [confirmClearHistory, setConfirmClearHistory] = useState(false);
   const hasTasks = state.tasks.length > 0;
   const [sortTasksOptions, setSortTaskOptions] = useState<SortTasksOptions>(
     () => {
@@ -37,6 +41,14 @@ export function History() {
     }));
   }, [state.tasks]);
 
+  useEffect(() => {
+    if (!confirmClearHistory) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setConfirmClearHistory(false);
+
+    dispatch({type: TaskActionTypes.RESET_STATE});
+  }, [confirmClearHistory, dispatch]);
+
   function handleSortTasks({ field }: Pick<SortTasksOptions, 'field'>) {
     const newDirection = sortTasksOptions.direction === 'desc' ? 'asc' : 'desc';
 
@@ -52,9 +64,10 @@ export function History() {
   }
   
   function handleResetHistory() {
-    if (!confirm('Tem certeza que deseja realizar esta operação?')) return
-
-    dispatch({ type: TaskActionTypes.RESET_STATE });
+    showMessage.dismiss();
+    showMessage.confirm('Tem Certeza que deseja limpar o Histórico?', (confirmation) => {
+      setConfirmClearHistory(confirmation);
+    });
   }
 
   return(
