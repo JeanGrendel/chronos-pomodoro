@@ -57,6 +57,11 @@ export function taskReducer(state: TaskStateModel, action: TaskActionModel): Tas
           }),
         };
       }  
+      case TaskActionTypes.CHANGE_SETTINGS: {
+        return {
+          ...state, config: {...action.payload}
+        };
+      }
     }
   // Sempre deve retornar o estado
   return state;
